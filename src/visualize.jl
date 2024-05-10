@@ -1,3 +1,5 @@
+using ITensorMPS: MPS
+
 #
 # Contraction sequence
 #
