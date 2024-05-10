@@ -1,4 +1,5 @@
 using ITensors
+using ITensorMPS
 using ITensorVisualizationBase
 using LayeredLayouts
 using Graphs
