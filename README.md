@@ -17,9 +17,9 @@ j = Index(10, "j")
 k = Index(40, "k")
 l = Index(40, "l")
 m = Index(40, "m")
-A = randomITensor(i, j, k)
-B = randomITensor(i, j, l, m)
-C = randomITensor(k, l)
+A = random_itensor(i, j, k)
+B = random_itensor(i, j, l, m)
+C = random_itensor(k, l)
 ABC = @visualize A * B * C
 ```
 This will execute the contraction and output
