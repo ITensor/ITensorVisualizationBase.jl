@@ -3,7 +3,7 @@ using ITensorMPS
 using ITensorVisualizationBase
 
 s = siteinds("S=1/2", 5; conserve_qns=true)
-ψ = randomMPS(s, n -> isodd(n) ? "↑" : "↓"; linkdims=2)
+ψ = random_mps(s, n -> isodd(n) ? "↑" : "↓"; linkdims=2)
 orthogonalize!(ψ, 2)
 ψdag = prime(linkinds, dag(ψ))
 tn = [ψ..., ψdag...]
