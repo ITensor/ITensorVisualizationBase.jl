@@ -1,3 +1,5 @@
+using ITensors.SiteTypes: op
+
 #
 # Conversion between Graphs and ITensor networks
 #
