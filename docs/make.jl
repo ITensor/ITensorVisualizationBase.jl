@@ -3,7 +3,8 @@ using ITensorFormatter: ITensorFormatter
 using ITensorVisualizationBase: ITensorVisualizationBase
 
 DocMeta.setdocmeta!(
-    ITensorVisualizationBase, :DocTestSetup, :(using ITensorVisualizationBase); recursive = true
+    ITensorVisualizationBase, :DocTestSetup, :(using ITensorVisualizationBase);
+    recursive = true
 )
 
 ITensorFormatter.make_index!(pkgdir(ITensorVisualizationBase))
