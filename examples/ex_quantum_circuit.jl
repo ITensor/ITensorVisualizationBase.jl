@@ -1,8 +1,8 @@
-using ITensors
+using Graphs
 using ITensorMPS
 using ITensorVisualizationBase
+using ITensors
 using LayeredLayouts
-using Graphs
 
 N = 10
 layers = 10
@@ -14,11 +14,11 @@ layer(N) = append!(layer(N, 1), layer(N, 2))
 layer_N = layer(N)
 gates = []
 for _ in 1:layers
-  append!(gates, layer_N)
+    append!(gates, layer_N)
 end
 
 for _ in 1:ndelete
-  deleteat!(gates, rand(eachindex(gates)))
+    deleteat!(gates, rand(eachindex(gates)))
 end
 
 U, s̃ = circuit_network(gates, s)
@@ -26,7 +26,7 @@ U, s̃ = circuit_network(gates, s)
 ψ̃ = prod(MPS(s̃))
 tn = [ψ, U..., ψ̃]
 
-edge_labels = (; plevs=true)
+edge_labels = (; plevs = true)
 layout(g) = layered_layout(solve_positions(Zarate(), g))
 @visualize fig tn arrow_show = true edge_labels = edge_labels layout = layout
 

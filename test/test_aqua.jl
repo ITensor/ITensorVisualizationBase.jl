@@ -3,5 +3,6 @@ using ITensorVisualizationBase: ITensorVisualizationBase
 using Test: @testset
 
 @testset "Code quality (Aqua.jl)" begin
-    Aqua.test_all(ITensorVisualizationBase)
+    # ITensorVisualizationBase extends APIs from external packages by design.
+    Aqua.test_all(ITensorVisualizationBase; piracies = false)
 end
