@@ -9,25 +9,25 @@ default_backend() = Backend(nothing)
 #
 
 function subscript_char(n::Integer)
-  @assert 0 ≤ n ≤ 9
-  return Char(0x2080 + n)
+    @assert 0 ≤ n ≤ 9
+    return Char(0x2080 + n)
 end
 
 function subscript(n::Integer)
-  ss = prod(Iterators.reverse((subscript_char(d) for d in digits(abs(n)))))
-  if n < 0
-    ss = "₋" * ss
-  end
-  return ss
+    ss = prod(Iterators.reverse((subscript_char(d) for d in digits(abs(n)))))
+    if n < 0
+        ss = "₋" * ss
+    end
+    return ss
 end
 
 subscript(n) = string(n)
 
 default_vertex_labels_prefix(b::Backend, g) = "T"
 function default_vertex_labels(
-  b::Backend, g::AbstractGraph, vertex_labels_prefix=default_vertex_labels_prefix(b)
-)
-  return [string(vertex_labels_prefix, subscript(v)) for v in vertices(g)]
+        b::Backend, g::AbstractGraph, vertex_labels_prefix = default_vertex_labels_prefix(b)
+    )
+    return [string(vertex_labels_prefix, subscript(v)) for v in vertices(g)]
 end
 
 default_vertex_size(b::Backend, g) = 60
@@ -44,11 +44,11 @@ default_vertex_textsize(b::Backend, g) = 20
 default_edge_textsize(b::Backend) = 30
 
 function default_edge_labels(b::Backend, g::AbstractGraph)
-  return fill("", ne(g))
+    return fill("", ne(g))
 end
 
 function default_edge_labels(b::Backend, g::AbstractMetaGraph)
-  return IndexLabels(b)
+    return IndexLabels(b)
 end
 
 default_dims(b::Backend) = true
@@ -63,59 +63,59 @@ abstract type AbstractEdgeLabels end
 (l::AbstractEdgeLabels)(g::AbstractGraph) = edge_labels(l, g)
 
 struct IndexLabels <: AbstractEdgeLabels
-  dims::Bool
-  tags::Bool
-  ids::Bool
-  plevs::Bool
-  qns::Bool
-  newlines::Bool
+    dims::Bool
+    tags::Bool
+    ids::Bool
+    plevs::Bool
+    qns::Bool
+    newlines::Bool
 end
 
 IndexLabels(; kwargs...) = IndexLabels(Backend(); kwargs...)
 IndexLabels(backend; kwargs...) = IndexLabels(Backend(backend); kwargs...)
 
 function IndexLabels(
-  b::Backend;
-  dims=default_dims(b),
-  tags=default_tags(b),
-  ids=default_ids(b),
-  plevs=default_plevs(b),
-  qns=default_qns(b),
-  newlines=default_newlines(b),
-)
-  return IndexLabels(dims, tags, ids, plevs, qns, newlines)
+        b::Backend;
+        dims = default_dims(b),
+        tags = default_tags(b),
+        ids = default_ids(b),
+        plevs = default_plevs(b),
+        qns = default_qns(b),
+        newlines = default_newlines(b)
+    )
+    return IndexLabels(dims, tags, ids, plevs, qns, newlines)
 end
 
 edge_labels(b::Backend, l::Vector{String}, g::AbstractGraph) = l
 
 function edge_labels(b::Backend, l::IndexLabels, g::AbstractGraph)
-  return edge_labels(l, g)
+    return edge_labels(l, g)
 end
 
 function edge_labels(l::IndexLabels, g::AbstractGraph)
-  return String[edge_label(l, g, e) for e in edges(g)]
+    return String[edge_label(l, g, e) for e in edges(g)]
 end
 
 function edge_labels(b::Backend, params::NamedTuple, g::AbstractGraph)
-  return IndexLabels(b; params...)(g)
+    return IndexLabels(b; params...)(g)
 end
 
 function edge_label(l::IndexLabels, g::AbstractMetaGraph, e)
-  indsₑ = get_prop(g, e, :inds)
-  return label_string(
-    indsₑ;
-    is_self_loop=is_self_loop(e),
-    dims=l.dims,
-    tags=l.tags,
-    ids=l.ids,
-    plevs=l.plevs,
-    qns=l.qns,
-    newlines=l.newlines,
-  )
+    indsₑ = get_prop(g, e, :inds)
+    return label_string(
+        indsₑ;
+        is_self_loop = is_self_loop(e),
+        dims = l.dims,
+        tags = l.tags,
+        ids = l.ids,
+        plevs = l.plevs,
+        qns = l.qns,
+        newlines = l.newlines
+    )
 end
 
 function _edge_label(l, g::AbstractGraph, e)
-  return string(e)
+    return string(e)
 end
 
 edge_label(l::IndexLabels, g::AbstractGraph, e) = _edge_label(l, g, e)
@@ -130,68 +130,75 @@ idstring(i::Index) = string(id(i) % 1000)
 tagsstring(i::Index) = string(tags(i))
 qnstring(i::Index) = ""
 function qnstring(i::QNIndex)
-  str = "["
-  for (n, qnblock) in pairs(space(i))
-    str *= "$qnblock"
-    if n ≠ lastindex(space(i))
-      str *= ", "
+    str = "["
+    for (n, qnblock) in pairs(space(i))
+        str *= "$qnblock"
+        if n ≠ lastindex(space(i))
+            str *= ", "
+        end
     end
-  end
-  str *= "]"
-  if dir(i) == ITensors.In
-    str *= "†"
-  end
-  return str
+    str *= "]"
+    if dir(i) == ITensors.In
+        str *= "†"
+    end
+    return str
 end
 
 function label_string(i::Index; dims, tags, plevs, ids, qns)
-  showing_plev = plevs && (plev(i) > 0)
+    showing_plev = plevs && (plev(i) > 0)
 
-  str = ""
-  if any((tags, showing_plev, ids, qns))
-    str *= "("
-  end
-  if dims
-    str *= string(dim(i))
-  end
-  if ids
+    str = ""
+    if any((tags, showing_plev, ids, qns))
+        str *= "("
+    end
     if dims
-      str *= "|"
+        str *= string(dim(i))
     end
-    str *= idstring(i)
-  end
-  if tags
-    if any((dims, ids))
-      str *= "|"
+    if ids
+        if dims
+            str *= "|"
+        end
+        str *= idstring(i)
     end
-    str *= tagsstring(i)
-  end
-  if any((tags, showing_plev, ids, qns))
-    str *= ")"
-  end
-  if plevs
-    str *= plevstring(i)
-  end
-  if qns
-    str *= qnstring(i)
-  end
-  return str
+    if tags
+        if any((dims, ids))
+            str *= "|"
+        end
+        str *= tagsstring(i)
+    end
+    if any((tags, showing_plev, ids, qns))
+        str *= ")"
+    end
+    if plevs
+        str *= plevstring(i)
+    end
+    if qns
+        str *= qnstring(i)
+    end
+    return str
 end
 
-function label_string(is; is_self_loop=false, dims, tags, plevs, ids, qns, newlines)
-  str = ""
-  for n in eachindex(is)
-    str *= label_string(is[n]; dims=dims, tags=tags, plevs=plevs, ids=ids, qns=qns)
-    if n ≠ lastindex(is)
-      if any((dims, tags, ids, qns))
-        str *= "⊗"
-      end
-      if newlines && any((tags, ids, qns))
-        str *= "\n"
-      end
+function label_string(is; is_self_loop = false, dims, tags, plevs, ids, qns, newlines)
+    str = ""
+    for n in eachindex(is)
+        str *= label_string(
+            is[n];
+            dims = dims,
+            tags = tags,
+            plevs = plevs,
+            ids = ids,
+            qns = qns
+        )
+        if n ≠ lastindex(is)
+            if any((dims, tags, ids, qns))
+                str *= "⊗"
+            end
+            if newlines && any((tags, ids, qns))
+                str *= "\n"
+            end
+        end
     end
-  end
-  return str
+    return str
 end
 
 #############################################################################
@@ -199,15 +206,15 @@ end
 #
 
 function width(inds)
-  return log2(dim(inds)) + 1
+    return log2(dim(inds)) + 1
 end
 
 function default_edge_widths(b::Backend, g::AbstractMetaGraph)
-  return Float64[width(get_prop(g, e, :inds)) for e in edges(g)]
+    return Float64[width(get_prop(g, e, :inds)) for e in edges(g)]
 end
 
 function default_edge_widths(b::Backend, g::AbstractGraph)
-  return fill(one(Float64), ne(g))
+    return fill(one(Float64), ne(g))
 end
 
 #############################################################################
@@ -219,14 +226,14 @@ default_arrow_size(b::Backend, g) = 30
 _hasqns(tn::Vector{ITensor}) = any(hasqns, tn)
 
 function _hasqns(g::AbstractMetaGraph)
-  if iszero(ne(g))
-    if has_prop(g, first(vertices(g)), :inds)
-      return hasqns(get_prop(g, first(vertices(g)), :inds))
-    else
-      return hasqns(())
+    if iszero(ne(g))
+        if has_prop(g, first(vertices(g)), :inds)
+            return hasqns(get_prop(g, first(vertices(g)), :inds))
+        else
+            return hasqns(())
+        end
     end
-  end
-  return hasqns(get_prop(g, first(edges(g)), :inds))
+    return hasqns(get_prop(g, first(edges(g)), :inds))
 end
 
 _hasqns(g::AbstractGraph) = false

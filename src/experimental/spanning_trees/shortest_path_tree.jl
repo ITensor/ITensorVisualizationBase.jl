@@ -4,18 +4,18 @@ using Random
 Random.seed!(1234)
 
 function dijkstra_spt(g, v_src_initial)
-  out = dijkstra_shortest_paths(g, [v_src_initial]; allpaths=true, trackvertices=true)
-  paths = out.predecessors
-  edges = Edge{Int}[]
-  for v_dst_final in eachindex(paths)
-    v_src = v_src_initial
-    p = paths[v_dst_final]
-    @show v_src_initial, p, v_dst_final
-    for v_src in p
-      push!(edges, Edge(v_src => v_dst_final))
+    out = dijkstra_shortest_paths(g, [v_src_initial]; allpaths = true, trackvertices = true)
+    paths = out.predecessors
+    edges = Edge{Int}[]
+    for v_dst_final in eachindex(paths)
+        v_src = v_src_initial
+        p = paths[v_dst_final]
+        @show v_src_initial, p, v_dst_final
+        for v_src in p
+            push!(edges, Edge(v_src => v_dst_final))
+        end
     end
-  end
-  return edges
+    return edges
 end
 
 g = Graph(6, 10)
