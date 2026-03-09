@@ -1,7 +1,10 @@
 name = "ITensorVisualizationBase"
 uuid = "cd2553d2-8bef-4d93-8a38-c62f17d5ad23"
 authors = ["Matthew Fishman <mfishman@flatironinstitute.org> and contributors"]
-version = "0.1.13"
+version = "0.1.14"
+
+[workspace]
+projects = ["benchmark", "dev", "docs", "examples", "test"]
 
 [deps]
 AbstractTrees = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
@@ -23,13 +26,7 @@ GeometryBasics = "0.4.1, 0.5"
 Graphs = "1.4.1"
 ITensorMPS = "0.3"
 ITensors = "0.7, 0.8, 0.9"
-MetaGraphs = "0.7.1, 0.8"
+MetaGraphs = "0.7.1, 0.8, 0.9"
 NetworkLayout = "0.4.3"
 Statistics = "1.10"
 julia = "1.10"
-
-[extras]
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[targets]
-test = ["Test"]
