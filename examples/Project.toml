@@ -8,5 +8,10 @@ LayeredLayouts = "f4a74d36-062a-4d48-97cd-1356bad1de4e"
 NetworkLayout = "46757867-2c16-5918-afeb-47bfcb05e46a"
 
 [compat]
+GeometryBasics = "0.4.1, 0.5"
+Graphs = "1.4.1"
 ITensorMPS = "0.3"
+ITensorVisualizationBase = "0.1"
 ITensors = "0.7, 0.8, 0.9"
+LayeredLayouts = "0.2"
+NetworkLayout = "0.4.3"
