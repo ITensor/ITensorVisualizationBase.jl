@@ -1,3 +1,3 @@
 var documenterSearchIndex = {"docs":
-[{"location":"#ITensorVisualizationBase","page":"Home","title":"ITensorVisualizationBase","text":"Documentation for ITensorVisualizationBase.\n\n","category":"section"},{"location":"#ITensorVisualizationBase.Grid","page":"Home","title":"ITensorVisualizationBase.Grid","text":"Grid\n\nGride layout.\n\n\n\n\n\n","category":"type"}]
+[{"category":"section","location":"#ITensorVisualizationBase","page":"Home","text":"Documentation for ITensorVisualizationBase.\n\n","title":"ITensorVisualizationBase"},{"category":"type","location":"#ITensorVisualizationBase.Grid","page":"Home","text":"Grid\n\nGride layout.\n\n\n\n\n\n","title":"ITensorVisualizationBase.Grid"}]
 }
