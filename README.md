@@ -39,6 +39,8 @@ Then, the package can be added as usual through the package manager:
 julia> Pkg.add("ITensorVisualizationBase")
 ```
 
+## Examples
+
 This is an internal package providing common code for defining backends for visualizing
 tensor networks of ITensors. It is only an interface package, and does not provide
 concrete implementations of visualizing tensor network code (by default, it does
