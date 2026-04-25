@@ -51,24 +51,14 @@ julia> Pkg.add("ITensorVisualizationBase")
 # [ITensors.jl](https://github.com/ITensor/ITensors.jl) package to view and debug tensor
 # network contractions, for example:
 
+# Load a visualization backend (such as `using ITensorUnicodePlots`) to actually render
+# the diagrams; without one, the `@visualize` macro is a no-op so that the example below
+# still runs in test environments that do not have a backend installed.
+# `ITensorVisualizationBase` handles the logic of switching between backends.
+
 using ITensorVisualizationBase: ITensorVisualizationBase, @visualize
 using ITensors: Index, random_itensor
-
-# Load a visualization backend, which will reexport the interface of
-# `ITensorVisualizationBase` automatically:
-#=
-```julia
-using ITensorUnicodePlots
-```
-=#
-
-# (we leave the `using ITensorUnicodePlots` line out of this example so it can run in
-# test environments that do not have the backend installed.)
-
-# `ITensorVisualizationBase` handles the logic of switching between backends:
-
 @show ITensorVisualizationBase.get_backend()
-
 i = Index(2, "i")
 j = Index(10, "j")
 k = Index(40, "k")
@@ -78,8 +68,9 @@ A = random_itensor(i, j, k)
 B = random_itensor(i, j, l, m)
 C = random_itensor(k, l)
 ABC = @visualize A * B * C
+ABC_tags = @visualize A * B * C edge_labels = (tags = true,)
 
-# With the `ITensorUnicodePlots` backend loaded, this outputs:
+# With `ITensorUnicodePlots` loaded, the first `@visualize` call outputs:
 
 #=
 ```julia
@@ -108,9 +99,7 @@ ITensorVisualizationBase.get_backend() = ITensorVisualizationBase.Backend{:Unico
 ```
 =#
 
-# You can show the visualization with tags with:
-
-ABC_tags = @visualize A * B * C edge_labels = (tags = true,)
+# And the second `@visualize` call (with `edge_labels = (tags = true,)`) outputs:
 
 #=
 ```julia
