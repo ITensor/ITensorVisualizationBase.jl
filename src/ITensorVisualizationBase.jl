@@ -9,7 +9,7 @@ using Graphs: Graphs, AbstractEdge, AbstractGraph, SimpleDiGraph, SimpleGraph, a
     add_vertex!, all_neighbors, dst, edges, ne, neighbors, nv, src, vertices
 using ITensors
 using ITensors.ITensorVisualizationCore
-using ITensors: QNIndex, data
+using ITensors: QNIndex
 using LinearAlgebra
 using MetaGraphs
 using NetworkLayout
