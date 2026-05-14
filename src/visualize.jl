@@ -1,5 +1,3 @@
-using ITensorMPS: MPS
-
 #
 # Contraction sequence
 #
@@ -115,7 +113,6 @@ end
 function visualize(tn::Tuple{Vector{ITensor}}, args...; kwargs...)
     return visualize(only(tn), args...; kwargs...)
 end
-visualize(ψ::MPS, args...; kwargs...) = visualize(data(ψ), args...; kwargs...)
 function visualize(tn::Tuple{ITensor, Vararg{ITensor}}, args...; kwargs...)
     return visualize(collect(tn), args...; kwargs...)
 end
@@ -142,7 +139,6 @@ end
 function visualize!(fig, tn::Vector{ITensor}, sequence = nothing; kwargs...)
     return visualize!(fig, MetaDiGraph(tn); kwargs...)
 end
-visualize!(fig, ψ::MPS, sequence = nothing; kwargs...) = visualize!(fig, data(ψ); kwargs...)
 function visualize!(fig, tn::Tuple{Vararg{ITensor}}, sequence = nothing; kwargs...)
     return visualize!(fig, collect(tn); kwargs...)
 end
